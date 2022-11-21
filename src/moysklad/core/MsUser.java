@@ -31,5 +31,4 @@ public class MsUser
     {
         this.password = password;
     }
-    //UUID accountId;
 }

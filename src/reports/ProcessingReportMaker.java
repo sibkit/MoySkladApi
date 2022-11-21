@@ -14,10 +14,11 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.*;
 
-public class ProcessingReportMaker
+public class ProcessingReportMaker implements ReportMaker
 {
 
-    List<ReportPart> reportParts = new ArrayList<>();
+    private List<ReportPart> reportParts = new ArrayList<>();
+    private MsDataSet dataSet;
 
     ReportPart getReportPart(int year, int month)
     {
@@ -76,6 +77,7 @@ public class ProcessingReportMaker
         return gi;
     }
 
+    /*
     MsDataLoader getDataManager()
     {
         MsConfiguration cfg = MsConfiguration.createConfiguration();
@@ -85,110 +87,86 @@ public class ProcessingReportMaker
         MsDataLoader dm = new MsDataLoader(cfg, new MsDataSet());
         return dm;
     }
+*/
 
-    public void makeReport()
-    {
-        MsDataLoader dm = getDataManager();
 
-        System.out.println("Загрузка товаров...");
+    @Override
+    public void initialize(MsDataSet dataSet) {
+        this.dataSet = dataSet;
+    }
+
+    @Override
+    public void print() {
+
         Map<UUID, MsProduct> productsMap = new HashMap<>();
-        MsQuery qProducts = new MsQuery(MsProduct.class, -1, -1);
-        List<MsProduct> products = (List<MsProduct>) dm.loadEntities(qProducts, null);
-        for(MsProduct p : products)
+        for(MsProduct p : dataSet.getEntities(MsProduct.class))
             productsMap.put(p.getId(),p);
 
-        System.out.println("Загрузка тех.операций...");
         Map<UUID, MsProcessingPlan> processingPlansMap = new HashMap<>();
-        MsQuery qProcessingPlans = new MsQuery(MsProcessingPlan.class, -1, -1);
-        List<MsProcessingPlan> processingPlans = (List<MsProcessingPlan>) dm.loadEntities(qProcessingPlans, null);
-        for(MsProcessingPlan pp : processingPlans)
+        for(MsProcessingPlan pp : dataSet.getEntities(MsProcessingPlan.class))
             processingPlansMap.put(pp.getId(),pp);
 
-
-
         System.out.println("Загрузка тех.карт...");
-
-
 
         DecimalFormatSymbols dfs = new DecimalFormatSymbols();
         dfs.setDecimalSeparator(',');
         DecimalFormat df = new DecimalFormat("########.##", dfs);
         df.setGroupingUsed(false);
 
-        List<MsProcessing> processings = (List<MsProcessing>) dm.loadEntities( new MsQuery(MsProcessing.class, 0, null), null);
 
 
 
 
-
-        for(MsProcessing pc: processings)
+        for(MsProcessing pc: dataSet.getEntities(MsProcessing.class))
         {
-            MsQuery qProcessingResults = new MsQuery(MsProcessingPositionResult.class, -1, -1);
-            //qProcessingResults.setParentId(pc.getId());
-            List<MsProcessingPositionResult> processingResults = (List<MsProcessingPositionResult>) dm.loadEntities(qProcessingResults,  null);
-
+            List<MsProcessingPositionResult> processingResults =dataSet.getEntities(MsProcessingPositionResult.class).stream().filter(pr -> pr.getProcessingId().equals(pc.getId())).toList();
 
             for(MsProcessingPositionResult ppr : processingResults)
             {
                 MsProduct p = productsMap.get(ppr.getProductId());
                 MsProcessingPlan pp = processingPlansMap.get(pc.getProcessingPlanId());
 
-
-
                 switch (ProductTypeIdentifier.identify(p.getName(), pp.getName()))
                 {
-                    case FINISHED:
-                    {
+                    case FINISHED: {
                         GroupItem fgi = getFinishedItem(pc.getMoment(),p.getName(),p.getCode(), p.getPathName());
                         fgi.setQuantity(fgi.getQuantity().add(ppr.getQuantity()));
 
                         break;
                     }
-                    case SEMIFINISHED:
-                    {
+                    case SEMIFINISHED: {
                         GroupItem fgi = getSemifinishedItem(pc.getMoment(),p.getName(),p.getCode(), p.getPathName());
                         fgi.setQuantity(fgi.getQuantity().add(ppr.getQuantity()));
 
                         break;
                     }
-                    case REPAIR:
-                    {
+                    case REPAIR: {
                         GroupItem ri = getReportPart(pc.getMoment()).getRepairsItems();
                         ri.setQuantity(ri.getQuantity().add(ppr.getQuantity()));
                     }
-
                 }
-
             }
-
         }
 
         String[] months = new String[]{"Январь","Февраль","Март","Апрель","Май","Июнь", "Июль", "Август","Сентябрь","Октябрь","Ноябрь", "Декабрь"};
-
-
 
         for(int y =2019;y<2021;y++)
         {
             for(int m=0;m<=11;m++)
             {
                 ReportPart rp = getReportPart(y,m);
-
                 System.out.println(" "+months[m]+" "+y);
 
-                rp.getFinishedItems().sort(new Comparator<GroupItem>()
-                {
+                rp.getFinishedItems().sort(new Comparator<GroupItem>() {
                     @Override
-                    public int compare(GroupItem o1, GroupItem o2)
-                    {
+                    public int compare(GroupItem o1, GroupItem o2) {
                         return o1.getProductName().compareTo(o2.getProductName());
                     }
                 });
 
-                rp.getSemifinishedItems().sort(new Comparator<GroupItem>()
-                {
+                rp.getSemifinishedItems().sort(new Comparator<GroupItem>() {
                     @Override
-                    public int compare(GroupItem o1, GroupItem o2)
-                    {
+                    public int compare(GroupItem o1, GroupItem o2) {
                         return o1.getProductName().compareTo(o2.getProductName());
                     }
                 });
@@ -209,10 +187,5 @@ public class ProcessingReportMaker
 
             }
         }
-
-
-
-
     }
-
 }

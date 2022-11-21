@@ -6,14 +6,12 @@ import moysklad.mapping.MsEntityMapperBase;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class EntityNode
-{
+public abstract class EntityNode {
     private MsEntityMapperBase mapper;
-    private List<NodeEntry> nodeEntries = new ArrayList<>();
-    private String msType;
+    private final List<NodeEntry> nodeEntries = new ArrayList<>();
+    private final String msType;
 
-    public EntityNode(String msType, MsEntityMapperBase mapper)
-    {
+    public EntityNode(String msType, MsEntityMapperBase mapper) {
         this.msType = msType;
         this.mapper = mapper;
     }
@@ -28,8 +26,7 @@ public abstract class EntityNode
         return nodeEntries;
     }
 
-    public void addNode(String key, ChildNode node)
-    {
+    public void addNode(String key, ChildNode node) {
         this.nodeEntries.add(new NodeEntry(key, node));
         node.setParentNode(this);
     }

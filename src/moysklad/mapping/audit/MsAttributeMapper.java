@@ -10,7 +10,6 @@ public class MsAttributeMapper extends MsEntityMapperBase<MsAttribute>
     @Override
     public void bindToEntity(Json jObj, MsAttribute entity)
     {
-        System.out.println("bind to attribute not implemented");
         MsJsonReader r = getJsonReader(jObj);
         entity.setId(r.readUUID("id"));
 

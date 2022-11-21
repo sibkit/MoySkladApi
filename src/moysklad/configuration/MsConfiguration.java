@@ -53,6 +53,7 @@ public class MsConfiguration
         rnProcessingPlan.addNode("materials", cnProcessingPlanMaterial);
         ChildNode cnProcessingPlanProduct = new ChildNode("processingplanresult", new MsProcessingPlanResultMapper());
         rnProcessingPlan.addNode("products", cnProcessingPlanProduct);
+        rootNodes.add(rnProcessingPlan);
 
         rootNodes.add(new RootNode("product", new MsProductMapper(),"https://online.moysklad.ru/api/remap/1.2/entity/product"));
         rootNodes.add(new RootNode("attributemetadata", new MsAttributeMapper(), "https://online.moysklad.ru/api/remap/1.2/entity/product/metadata/attributes"));
@@ -109,11 +110,8 @@ public class MsConfiguration
         nodes.add(nProduct);
 */
 
-
         MsConfiguration result = new MsConfiguration();
-
         result.setServerApiUrl("https://online.moysklad.ru/api/remap/1.2");
-
 
         //result.getUsers().add(new MsUser("json_1@ledmaster_pro","ledmaster"));
         //result.getUsers().add(new MsUser("json_2@ledmaster_pro", "ledmaster"));

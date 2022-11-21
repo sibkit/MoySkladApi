@@ -5,8 +5,7 @@ public class NodeEntry
     private String key;
     private ChildNode node;
 
-    public NodeEntry(String key, ChildNode node)
-    {
+    public NodeEntry(String key, ChildNode node) {
         this.key = key;
         this.node = node;
     }
