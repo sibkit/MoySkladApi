@@ -111,11 +111,9 @@ public class MsConfiguration
 
 
         MsConfiguration result = new MsConfiguration();
-        result.setAccountId("13a89ca6-38ea-11e9-9109-f8fc00011c68");
+
         result.setServerApiUrl("https://online.moysklad.ru/api/remap/1.2");
 
-        result.getUsers().add(new MsUser("kea@ledmaster_pro","ledmaster@A00991994"));
-        result.getUsers().add(new MsUser("admin@ledmaster_pro", "ledmaster_77"));//""ledmaster@A571"));
 
         //result.getUsers().add(new MsUser("json_1@ledmaster_pro","ledmaster"));
         //result.getUsers().add(new MsUser("json_2@ledmaster_pro", "ledmaster"));
