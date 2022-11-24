@@ -15,7 +15,6 @@ public class ProductTypeIdentifier
         finishedProducts.add("Блок индикации");
     }
 
-
     public static ProcessingResult identify(String productName, String processingPlanName)
     {
         if(finishedProducts==null)
