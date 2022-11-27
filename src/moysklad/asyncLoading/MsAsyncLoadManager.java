@@ -216,8 +216,6 @@ public class MsAsyncLoadManager
         this.loader = loader;
     }
 
-
-
     public void addEventHandler(AsyncLoadEventHandler handler)
     {
         handlers.add(handler);

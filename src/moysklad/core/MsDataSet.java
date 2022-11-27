@@ -18,16 +18,16 @@ public class MsDataSet implements Serializable
 
     public <T extends MsEntity> List<T> getEntities(Class<T> entityClass)
     {
-        List<T> result = (List<T>)entitiesMap.get(entityClass);
-        if(result == null)
-        {
-            synchronized (syncKey)
-            {
+        synchronized (syncKey) {
+            List<T> result = (List<T>) entitiesMap.get(entityClass);
+            if (result == null) {
+
                 result = new ArrayList<>();
                 entitiesMap.put(entityClass, result);
             }
+
+            return result;
         }
-        return result;
     }
 
     public <T extends MsEntity> void addEntity(T entity)
