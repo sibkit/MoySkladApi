@@ -1,10 +1,10 @@
 package moysklad.entities.audit;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
-public class MsAuditEvent
-{
+public class MsAuditEvent implements Serializable {
     private String uid;
     private Boolean supportAccess;
     private String source;

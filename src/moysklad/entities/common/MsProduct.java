@@ -2,9 +2,10 @@ package moysklad.entities.common;
 
 import moysklad.entities.MsEntity;
 
+import java.io.Serializable;
 import java.util.UUID;
 
-public class MsProduct implements MsEntity
+public class MsProduct implements MsEntity, Serializable
 {
     private UUID id;
     private String code;

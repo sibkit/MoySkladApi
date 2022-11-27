@@ -2,10 +2,11 @@ package moysklad.entities.common;
 
 import moysklad.entities.MsEntity;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-public class MsProductPosition implements MsEntity
+public class MsProductPosition implements MsEntity, Serializable
 {
     private UUID id;
     private UUID productId;

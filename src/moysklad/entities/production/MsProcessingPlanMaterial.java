@@ -2,9 +2,10 @@ package moysklad.entities.production;
 
 import moysklad.entities.common.MsProductPosition;
 
+import java.io.Serializable;
 import java.util.UUID;
 
-public class MsProcessingPlanMaterial  extends MsProductPosition
+public class MsProcessingPlanMaterial  extends MsProductPosition implements Serializable
 {
     private UUID processingPlanId;
 

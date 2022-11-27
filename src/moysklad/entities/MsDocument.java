@@ -2,10 +2,11 @@ package moysklad.entities;
 
 import moysklad.entities.MsEntity;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
-public abstract class MsDocument implements MsEntity
+public abstract class MsDocument implements MsEntity, Serializable
 {
     private UUID id;
     private UUID syncId;

@@ -2,6 +2,8 @@ package moysklad.entities.common;
 
 import moysklad.entities.MsEntity;
 
-public class MsProductGroup implements MsEntity
+import java.io.Serializable;
+
+public class MsProductGroup implements MsEntity, Serializable
 {
 }

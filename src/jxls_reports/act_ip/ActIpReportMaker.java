@@ -1,5 +1,8 @@
-package jxls_reports;
+package jxls_reports.act_ip;
 
+import jxls_reports.Employee;
+import jxls_reports.MoneyToWords;
+import moysklad.core.MsDataSet;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -23,11 +26,18 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ActIpReportMaker {
-    public static void makeReport() throws Exception {
-        var str = MoneyToWords.inwords(4567456.75);
+
+    MsDataSet dataSet;
+    public  void initialize(MsDataSet dataSet) {
+        this.dataSet = dataSet;
+    }
+
+    public  void makeReport() throws Exception {
+        var str = MoneyToWords.inwords(4567456.74);
         String s1 = str.substring(0, 1).toUpperCase();
         var str2 = s1 + str.substring(1);
         System.out.println(str2);
@@ -35,8 +45,9 @@ public class ActIpReportMaker {
 
 
         List<Employee> employees = generateSampleEmployeeData();
-        try(InputStream is = new FileInputStream("D:\\temp\\test_autosize.xlsx")) {
-            try (OutputStream os = new FileOutputStream("D:\\temp\\test_autosize_output_2.xlsx")) {
+        try(InputStream is = new FileInputStream("act_ip_template.xlsx")) {
+            try (OutputStream os = new FileOutputStream("act_ip_output.xlsx")) {
+
                 Transformer transformer = PoiTransformer.createTransformer(is, os);
                 XlsCommentAreaBuilder.addCommandMapping("autoSize", AutoSizeCommand.class);
                 AreaBuilder areaBuilder = new XlsCommentAreaBuilder(transformer);
@@ -46,9 +57,10 @@ public class ActIpReportMaker {
 
                 Context context = new Context();
 
-                context.putVar("test", "very very very long string which should to be wrapped");
-                xlsArea.applyAt(new CellRef("Sheet1!A1"), context);
+                context.putVar("act_date", "31.11.2022");
+                xlsArea.applyAt(new CellRef("Стр1!A1"), context);
                 context.getConfig().setIsFormulaProcessingRequired(false);
+
                 ((PoiTransformer) transformer).getWorkbook().write(os);
 
                 //context.putVar("employees", employees);
@@ -59,7 +71,12 @@ public class ActIpReportMaker {
         }
     }
 
-    private static List<Employee> generateSampleEmployeeData() throws ParseException {
+    private List<ActIpItem> GenerateItems(MsDataSet dataSet, Date startDate, Date endDate) {
+       // dataSet.getEntities(Ms)
+        return  null;
+    }
+
+    private  List<Employee> generateSampleEmployeeData() throws ParseException {
         SimpleDateFormat sm = new SimpleDateFormat("MM-dd-yyyy");
         List<Employee> result = new ArrayList<>();
         for(int i=0;i<10;i++) {
@@ -75,7 +92,7 @@ public class ActIpReportMaker {
         return result;
     }
 
-    public static class AutoSizeCommand extends AbstractCommand {
+    public class AutoSizeCommand extends AbstractCommand {
         private Area area;
 
         @Override

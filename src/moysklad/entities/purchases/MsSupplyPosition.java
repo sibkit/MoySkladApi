@@ -2,10 +2,11 @@ package moysklad.entities.purchases;
 
 import moysklad.entities.common.MsProductPosition;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-public class MsSupplyPosition extends MsProductPosition
+public class MsSupplyPosition extends MsProductPosition implements Serializable
 {
     private UUID supplyId;
     private BigDecimal price;

@@ -2,10 +2,11 @@ package moysklad.entities.production;
 
 import moysklad.entities.MsDocument;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-public class MsProcessing extends MsDocument
+public class MsProcessing extends MsDocument implements Serializable
 {
     private UUID materialsStoreId;
     private UUID productsStoreId;

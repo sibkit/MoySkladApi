@@ -2,14 +2,17 @@ package moysklad.core;
 
 import moysklad.entities.MsEntity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MsDataSet
+
+public class MsDataSet implements Serializable
 {
-    private final Object syncKey = new Object();
+    class SyncKey implements Serializable {}
+    private final SyncKey syncKey = new SyncKey();
 
     Map<Class<? extends MsEntity>, List<? extends MsEntity>> entitiesMap = new HashMap<>();
 

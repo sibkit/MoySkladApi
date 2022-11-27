@@ -3,10 +3,11 @@ package moysklad.entities.production;
 import moysklad.entities.MsDocument;
 import moysklad.entities.MsEntity;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
-public class MsProcessingPlan implements MsEntity
+public class MsProcessingPlan implements MsEntity, Serializable
 {
     private UUID id;
     private Date updated;

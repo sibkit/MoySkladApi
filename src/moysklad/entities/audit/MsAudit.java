@@ -2,10 +2,11 @@ package moysklad.entities.audit;
 
 import moysklad.entities.MsEntity;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
-public class MsAudit implements MsEntity
+public class MsAudit implements MsEntity, Serializable
 {
     private UUID id;
     private String uid;

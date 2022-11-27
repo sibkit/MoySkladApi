@@ -2,9 +2,10 @@ package moysklad.entities.sales;
 
 import moysklad.entities.MsDocument;
 
+import java.io.Serializable;
 import java.util.UUID;
 
-public class MsDemand extends MsDocument
+public class MsDemand extends MsDocument implements Serializable
 {
     private UUID agentId;
     private UUID storeId;

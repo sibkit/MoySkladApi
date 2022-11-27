@@ -1,8 +1,9 @@
 package moysklad.entities.attributes;
 
+import java.io.Serializable;
 import java.util.UUID;
 
-public class MsAttributeValue
+public class MsAttributeValue implements Serializable
 {
     private UUID attributeId;
     private UUID entityId;
