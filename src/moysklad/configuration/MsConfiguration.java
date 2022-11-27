@@ -10,6 +10,8 @@ import moysklad.mapping.audit.MsAttributeMapper;
 import moysklad.mapping.common.MsProductMapper;
 import moysklad.mapping.common.MsStoreMapper;
 import moysklad.mapping.production.*;
+import moysklad.mapping.products.MsMoveMapper;
+import moysklad.mapping.products.MsMovePositionMapper;
 import moysklad.mapping.purchasing.MsPurchaseOrderMapper;
 import moysklad.mapping.purchasing.MsPurchaseOrderPositionMapper;
 import moysklad.mapping.purchasing.MsSupplyMapper;
@@ -27,11 +29,16 @@ public class MsConfiguration
     private List<MsUser> users = new ArrayList<>();
     private List<RootNode> entityNodes;
 
+    private static String getEntityPath(String entityName) {
+        return "https://online.moysklad.ru/api/remap/1.2/entity/"+entityName;
+    }
+
+
     public static MsConfiguration createConfiguration()
     {
         List<RootNode> rootNodes = new ArrayList<>();
 
-        RootNode rnPurchaseOrders = new RootNode("purchaseorder", new MsPurchaseOrderMapper(), "https://online.moysklad.ru/api/remap/1.2/entity/purchaseorder");
+        RootNode rnPurchaseOrders = new RootNode("purchaseorder", new MsPurchaseOrderMapper(), getEntityPath("purchaseorder"));
         ChildNode cnPurchaseOrderItem = new ChildNode("purchaseorderposition",new MsPurchaseOrderPositionMapper());
         rnPurchaseOrders.addNode("positions",cnPurchaseOrderItem);
         rootNodes.add(rnPurchaseOrders);
@@ -59,62 +66,15 @@ public class MsConfiguration
         rootNodes.add(new RootNode("attributemetadata", new MsAttributeMapper(), "https://online.moysklad.ru/api/remap/1.2/entity/product/metadata/attributes"));
 
         rootNodes.add(new RootNode("store", new MsStoreMapper(),"https://online.moysklad.ru/api/remap/1.2/entity/store"));
-        /*
 
-        List<EntityNode_old> nodes = new ArrayList<>();
-
-        EntityNode_old nPurchaseOrder = new EntityNode_old(new MsPurchaseOrderMapper());
-        nodes.add(nPurchaseOrder);
-
-        EntityNode_old nPurchaseOrderItem = new EntityNode_old(new MsPurchaseOrderPositionMapper());
-        nPurchaseOrder.addChildNode("positions", nPurchaseOrderItem);
-
-        EntityNode_old nCustomerOrder = new EntityNode_old(new MsCustomerOrderMapper());
-        nodes.add(nCustomerOrder);
-
-        EntityNode_old nSupply = new EntityNode_old(new MsSupplyMapper());
-        nodes.add(nSupply);
-
-        EntityNode_old nDemand = new EntityNode_old(new MsDemandMapper());
-        nodes.add(nDemand);
-
-        EntityNode_old nProcessingOrder = new EntityNode_old(new MsProcessingOrderMapper());
-        nodes.add(nProcessingOrder);
-
-        EntityNode_old nProcessing = new EntityNode_old(new MsProcessingMapper());
-        nodes.add(nProcessing);
-
-        EntityNode_old nProcessingPositionResult = new EntityNode_old(new MsProcessingPositionResultMapper());
-        nProcessing.addChildNode("products",nProcessingPositionResult);
-
-
-        EntityNode_old nProcessingPlan = new EntityNode_old(new MsProcessingPlanMapper());
-        nodes.add(nProcessingPlan);
-
-        EntityNode_old nStore = new EntityNode_old(new MsStoreMapper());
-        nodes.add(nStore);
-
-        EntityNode_old nCounterparty = new EntityNode_old(new MsCounterpartyMapper());
-        nodes.add(nCounterparty);
-
-        EntityNode_old nOrganization = new EntityNode_old(new MsOrganizationMapper());
-        nodes.add(nOrganization);
-
-        EntityNode_old nEmployee = new EntityNode_old(new MsEmployeeMapper());
-        nodes.add(nEmployee);
-
-        EntityNode_old nAudit = new EntityNode_old(new MsAuditMapper());
-        nodes.add(nAudit);
-
-        EntityNode_old nProduct = new EntityNode_old(new MsProductMapper());
-        nodes.add(nProduct);
-*/
+        RootNode rnMove = new RootNode("move", new MsMoveMapper(), "https://online.moysklad.ru/api/remap/1.2/entity/move");
+        ChildNode cnMovePosition = new ChildNode("moveposition", new MsMovePositionMapper());
+        rnMove.addNode("positions", cnMovePosition);
+        rootNodes.add(rnMove);
 
         MsConfiguration result = new MsConfiguration();
         result.setServerApiUrl("https://online.moysklad.ru/api/remap/1.2");
 
-        //result.getUsers().add(new MsUser("json_1@ledmaster_pro","ledmaster"));
-        //result.getUsers().add(new MsUser("json_2@ledmaster_pro", "ledmaster"));
 
         result.entityNodes = rootNodes;
         return result;
